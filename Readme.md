@@ -17,7 +17,7 @@ Este es el backend para la gestión de solicitudes, diseñado para interactuar c
 1. Clona el repositorio en tu máquina local:
 
     ```bash
-    git clone <URL del repositorio>
+    git clone [<URL del repositorio>](https://github.com/milagros-marquina-jumi/back_gestion_solicitudes.git)
     ```
 
 2. Abre el proyecto en tu IDE preferido (por ejemplo, IntelliJ IDEA o Eclipse).
