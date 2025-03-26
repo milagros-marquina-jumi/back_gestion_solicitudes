@@ -22,7 +22,37 @@ Este es el backend para la gestión de solicitudes, diseñado para interactuar c
 
 2. Abre el proyecto en tu IDE preferido (por ejemplo, IntelliJ IDEA o Eclipse).
 
-3. Asegúrate de tener configurada una base de datos PostgreSQL en tu entorno local.
+3. Asegúrate de tener configurada una base de datos PostgreSQL en tu entorno local. Para ello, puedes usar el siguiente script SQL para crear las tablas necesarias:
+
+    ```sql
+    CREATE TABLE solicitud (
+        id_solicitud SERIAL PRIMARY KEY,
+        marca VARCHAR(255) NOT NULL,
+        tipo_solicitud VARCHAR(255) NOT NULL,
+        fecha_envio DATE NOT NULL,
+        numero_contacto VARCHAR(20) NOT NULL,
+        nombre_contacto VARCHAR(255) NOT NULL
+    );
+
+    CREATE TABLE contacto (
+        id_contacto SERIAL PRIMARY KEY,
+        id_solicitud INT REFERENCES solicitud(id_solicitud) ON DELETE CASCADE,
+        nombre VARCHAR(255) NOT NULL,
+        numero VARCHAR(20) NOT NULL
+    );
+
+    INSERT INTO solicitud (marca, tipo_solicitud, fecha_envio, numero_contacto, nombre_contacto)
+    VALUES 
+        ('A', 'Solicitud 1', '2025-03-25', '123456789', 'Juan Calderon'),
+        ('C', 'Solicitud 2', '2025-03-26', '987654321', 'Ana Peralta');
+    
+    INSERT INTO contacto (id_solicitud, nombre, numero)
+    VALUES 
+        (1, 'Carlos Martínez', '555123456'),
+        (1, 'Lucía Fernández', '555654321'),
+        (2, 'Pedro Sánchez', '555987654'),
+        (2, 'María García', '555321654');
+    ```
 
 4. Configura los parámetros de conexión a la base de datos en `src/main/resources/application.properties`:
 
@@ -52,34 +82,6 @@ Este es el backend para la gestión de solicitudes, diseñado para interactuar c
 ### Contactos
 
 Los contactos están asociados a una solicitud, por lo tanto, los endpoints específicos para contactos se gestionan a través de las solicitudes.
-
-## Estructura de la Base de Datos
-
-### Tablas
-
-#### `solicitud`
-
-| Campo              | Tipo           | Descripción                          |
-|--------------------|----------------|--------------------------------------|
-| `id_solicitud`     | SERIAL         | ID único de la solicitud (Primary Key) |
-| `marca`            | VARCHAR(255)    | Marca asociada a la solicitud         |
-| `tipo_solicitud`   | VARCHAR(255)    | Tipo de solicitud                    |
-| `fecha_envio`      | DATE           | Fecha de envío de la solicitud       |
-| `numero_contacto`  | VARCHAR(20)     | Número de contacto principal         |
-| `nombre_contacto`  | VARCHAR(255)    | Nombre del contacto principal        |
-
-#### `contacto`
-
-| Campo             | Tipo           | Descripción                          |
-|-------------------|----------------|--------------------------------------|
-| `id_contacto`     | SERIAL         | ID único del contacto (Primary Key)  |
-| `id_solicitud`    | INT            | ID de la solicitud relacionada       |
-| `nombre`          | VARCHAR(255)    | Nombre del contacto                  |
-| `numero`          | VARCHAR(20)     | Número de contacto                   |
-
-### Relaciones
-
-- Una solicitud puede tener múltiples contactos, lo que se representa en la tabla `contacto` con la clave foránea `id_solicitud`.
 
 ## Swagger/OpenAPI
 
